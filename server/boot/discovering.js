@@ -16,8 +16,7 @@ module.exports = function (app) {
                     logger.info(`Service ${me} registered in etcd`);
                     logger.info(`Key: ${me}\t\u2192\tUrl: ${service.url}`);
                 } else {
-                    logger.error(`Service on ${me} registration failed`);
-                    throw new Error(`Registration on etcd key storage on ${etcd_host}:4001 failed`)
+                    logger.error(`Service ${me} registration failed on ${etcd_host}:4001`);                    
                 }
             });
         }, 1000);

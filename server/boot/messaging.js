@@ -38,8 +38,8 @@ module.exports = function (app) {
 
         app.rabbit = rabbit;
         logger.info(`Service ${app.get('ms_name')} joined rabbit network`);
-        // done()
     }
+
     app.once('started', () => {
         require('../lib/topology')(rabbit, {
             name: app.get('ms_name'),
@@ -48,8 +48,7 @@ module.exports = function (app) {
             .then(handle)
             .catch((err) => {
                 logger.error(`Error when joining rabbit network`, err);
-                // todo: workaround, see: https://github.com/arobson/rabbot/issues/27
-                process.exit(1);
-            })
-    })
+                throw err;
+            });
+    });
 }

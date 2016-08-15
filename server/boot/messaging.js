@@ -1,5 +1,6 @@
 const rabbit = require('wascally')
-    , debug = require("debug")("tracker");
+    , debug = require("debug")("ms:tracker")
+    , logger = require("../lib/logger");
 
 module.exports = function (app, done) {
     var Track = app.models.track;
@@ -43,7 +44,7 @@ module.exports = function (app, done) {
             .then(handle)
             .then(() => {
                 app.rabbit = rabbit;
-                debug("Rabbit client started");
+                logger.info(`Service ${app.get('ms_name')} joined rabbit network`);
             })
             .then(done);
 

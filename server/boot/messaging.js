@@ -45,10 +45,9 @@ module.exports = function (app, done) {
             .then(() => {
                 app.rabbit = rabbit;
                 logger.info(`Service ${app.get('ms_name')} joined rabbit network`);
+                done()
             })
-            .then(done);
-
-    app.close = () => {
-        rabbit.closeAll();
-    };
+            .catch((err) => {
+                throw err;
+            });
 }

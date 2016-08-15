@@ -33,8 +33,8 @@
     "loopback-datasource-juggler": "^2.39.0",
     "loopback-ds-timestamp-mixin": "^3.2.4",
     "node-uuid": "^1.4.7",
+    "rabbot": "^1.0.5",
     "serve-favicon": "^2.0.1",
-    "wascally": "^0.2.10",
     "winston": "^2.2.0"
   },
   "devDependencies": {

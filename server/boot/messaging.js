@@ -1,11 +1,11 @@
-const rabbit = require('wascally')
+const rabbit = require('rabbot')
     , debug = require("debug")("ms:tracker")
     , logger = require("../lib/logger");
 
-module.exports = function (app, done) {
+module.exports = function (app) {
     var Track = app.models.track;
 
-    function handle() {
+    const handle = () => {
         rabbit.handle('tracker.track', (message) => {
             debug("TRACK CAR", message.body)
             Track.create(message.body, (err, track) => {
@@ -23,7 +23,7 @@ module.exports = function (app, done) {
                             image: message.body.image,
                             description: message.body.description ? message.body.description : track.description
                         }, (err, tr) => {
-                            err ? message.reject() : message.ack();
+                            err ? message.reject(err) : message.ack();
                         })
                     }
                 })
@@ -32,22 +32,24 @@ module.exports = function (app, done) {
             debug("DELETE FROM TRACKING", message.body)
             if (message.body && message.body.carId)
                 Track.destroyAll({ carId: message.body.carId }, (err, info) => {
-                    err ? message.reject() : message.ack();
+                    err ? message.reject(err) : message.ack();
                 })
         });
+
+        app.rabbit = rabbit;
+        logger.info(`Service ${app.get('ms_name')} joined rabbit network`);
+        // done()
     }
-    if (process.env.NODE_ENV != 'test')
+    app.once('started', () => {
         require('../lib/topology')(rabbit, {
             name: app.get('ms_name'),
             host: app.get("rabbit_host")
         })
             .then(handle)
-            .then(() => {
-                app.rabbit = rabbit;
-                logger.info(`Service ${app.get('ms_name')} joined rabbit network`);
-                done()
-            })
             .catch((err) => {
-                throw err;
-            });
+                logger.error(`Error when joining rabbit network`, err);
+                // todo: workaround, see: https://github.com/arobson/rabbot/issues/27
+                process.exit(1);
+            })
+    })
 }

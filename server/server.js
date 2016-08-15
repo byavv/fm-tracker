@@ -44,10 +44,7 @@ boot(app, __dirname, (err) => {
     };
 
     process.on('SIGINT', () => {
-        debug('Exiting...');
-        app.close((err) => {            
-            process.exit(err ? -1 : 0)
-        });
+        app.close(process.exit.bind(null, 0));
     });
 
     if (require.main === module)

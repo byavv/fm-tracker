@@ -1,13 +1,16 @@
 module.exports = function (rabbit, options) {
+
     return rabbit.configure({
         // arguments used to establish a connection to a broker
         connection: {
-            user: 'guest',
-            pass: 'guest',
+            user: "guest",
+            pass: "guest",
             server: [options.host],
-            timeout: 2000,
-            port: 5672,
-            vhost: '%2f'
+           	port: 5672,
+            vhost: "%2f",
+            timeout: 1000,
+            failAfter: 30,
+            retryLimit: 400
         },
         // setup all exchanges, process might use
         exchanges: [

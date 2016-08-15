@@ -13,8 +13,6 @@ module.exports = function (app) {
         setTimeout(() => {
             registry.lookup(me, function (err, service) {
                 if (service) {
-                    //  logger.info(`Service on ${service.url} registered as ${me}`);
-
                     logger.info(`Service ${me} registered in etcd`);
                     logger.info(`Key: ${me}\t\u2192\tUrl: ${service.url}`);
                 } else {

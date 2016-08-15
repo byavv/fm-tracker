@@ -1,6 +1,6 @@
 FROM node:6.3
 
-# Maintainer
+# Maintainer 
 MAINTAINER Aksenchyk V. <aksenchyk.v@gmail.com>
 
 # Create app directory

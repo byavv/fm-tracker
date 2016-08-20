@@ -35,7 +35,6 @@ module.exports = function (app) {
                     err ? message.reject(err) : message.ack();
                 })
         });
-
         app.rabbit = rabbit;
         logger.info(`Service ${app.get('ms_name')} joined rabbit network`);
     }
